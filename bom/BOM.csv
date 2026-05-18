@@ -1,0 +1,26 @@
+Category,Item,Source,PartNumber,Qty,UnitPrice,Total
+Acoustic,RK-47 Microphone Capsule,MicParts,RK-47,1,169.00,169.00
+Electronics,LSK170B JFET,DigiKey,LSK170BTO-923LROHS-ND,2,7.12,14.24
+Electronics,BC547C NPN,DigiKey,BC547CBU-ND,2,0.27,0.54
+Electronics,1G Ohm Resistor,DigiKey,A106006CT-ND,1,1.24,1.24
+Electronics,6.2V Zener Diode,DigiKey,1N5234BVSCT-ND,1,0.49,0.49
+Electronics,1000pF NP0 Cap,DigiKey,490-8732-ND,2,0.53,1.06
+Electronics,0.1uF Film Cap,DigiKey,495-2465-ND,2,0.27,0.54
+Electronics,100K Resistor,DigiKey,100KXBK-ND,2,0.10,0.20
+Electronics,6.81K Resistor,DigiKey,6.81KXBK-ND,2,0.10,0.20
+Electronics,Neutrik Female XLR,B&H,NC3FXX,1,3.78,3.78
+Electronics,Neutrik Male XLR,B&H,NC3MXX,1,3.34,3.34
+Housing,U87-Style Mic Body,AliExpress,DIY Body,1,40.40,40.40
+Housing,Custom PCB,JLCPCB,Standard,5,0.42,2.10
+Housing,Mogami W2549 (10ft),Redco,W2549,10,1.03,10.30
+Infrastructure,TONOR Boom Arm,Amazon,T20,1,38.99,38.99
+Infrastructure,Focusrite Scarlett Solo,Amazon,4th Gen,1,159.99,159.99
+Lab,FNIRSI 1014D Scope,Amazon,1014D,1,172.99,172.99
+Lab,Pinecil V2 Iron,Pine Store,PINECIL-V2,1,25.99,25.99
+Lab,Pinecil Stand,Pine Store,Stand,1,1.99,1.99
+Lab,USB-C Silicone Cable,Pine Store,1.5m,1,3.99,3.99
+Logistics,DigiKey Shipping,DigiKey,,1,6.99,6.99
+Logistics,Redco Ship+Tax,Redco,,1,18.21,18.21
+Logistics,JLCPCB Shipping,JLCPCB,,1,29.41,29.41
+Logistics,Pine Store Shipping,Pine Store,,1,25.00,25.00
+Logistics,B&H Ship+Tax,B&H,,1,4.98,4.98
