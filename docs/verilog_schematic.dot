@@ -1,0 +1,88 @@
+digraph Verilog_Schoeps {
+    rankdir=LR;
+    node [shape=box, style=filled, fillcolor=lightgrey];
+    compound=true;
+    fontname="Courier New";
+
+    // --- External Ports ---
+    subgraph cluster_ports {
+        label = "Ports";
+        capsule_diaphragm [shape=invhouse, label="capsule_diaphragm"];
+        capsule_backplate [shape=house, label="capsule_backplate"];
+        xlr_pin1 [shape=diamond, label="xlr_pin1 (GND)"];
+        xlr_pin2 [shape=diamond, label="xlr_pin2 (HOT)"];
+        xlr_pin3 [shape=diamond, label="xlr_pin3 (COLD)"];
+    }
+
+    // --- Internal Wires ---
+    node [shape=ellipse, fillcolor=yellow, style=filled];
+    gate_node;
+    source_node;
+    main_rail;
+    q2_emitter;
+    q3_emitter;
+
+    // --- Instances ---
+    node [shape=component, fillcolor=white, style=filled];
+    
+    // Power/Bias
+    r5 [label="resistor r5\n(6.81k)"];
+    r6 [label="resistor r6\n(6.81k)"];
+    d1 [label="zener_diode d1\n(6.2V)"];
+    c3 [label="capacitor c3\n(0.1uF)"];
+    r9 [label="resistor r9\n(1M)"];
+
+    // JFET Stage
+    q1 [label="lsk170 q1\n(JFET)"];
+    r1 [label="resistor r1\n(1G)"];
+    r10 [label="resistor r10\n(1k)"];
+
+    // Output Stage
+    q2 [label="bc547 q2\n(NPN)"];
+    q3 [label="bc547 q3\n(NPN)"];
+    r2 [label="resistor r2\n(100k)"];
+    r3 [label="resistor r3\n(100k)"];
+    c1 [label="capacitor c1\n(0.1uF)"];
+    c2 [label="capacitor c2\n(0.1uF)"];
+
+    // RF
+    c4 [label="capacitor c4\n(1000pF)"];
+    c5 [label="capacitor c5\n(1000pF)"];
+
+    // --- Connectivity ---
+
+    // Power
+    xlr_pin2 -> r5; r5 -> main_rail;
+    xlr_pin3 -> r6; r6 -> main_rail;
+    main_rail -> d1; d1 -> xlr_pin1;
+    main_rail -> c3; c3 -> xlr_pin1;
+    main_rail -> r9; r9 -> capsule_backplate;
+
+    // Gate Node
+    capsule_diaphragm -> gate_node;
+    gate_node -> q1 [label="gate"];
+    gate_node -> r1; r1 -> xlr_pin1;
+
+    // Source Node
+    q1 -> source_node [label="source"];
+    main_rail -> q1 [label="drain"];
+    source_node -> r10; r10 -> xlr_pin1;
+    source_node -> q2 [label="base"];
+    source_node -> q3 [label="base"];
+
+    // Output HOT
+    main_rail -> q2 [label="collector"];
+    q2 -> q2_emitter [label="emitter"];
+    q2_emitter -> r2; r2 -> xlr_pin1;
+    q2_emitter -> c1; c1 -> xlr_pin2;
+
+    // Output COLD (The Flip)
+    xlr_pin1 -> q3 [label="collector", color=red, penwidth=2]; // PHASE FLIP
+    q3 -> q3_emitter [label="emitter"];
+    q3_emitter -> r3; r3 -> xlr_pin1;
+    q3_emitter -> c2; c2 -> xlr_pin3;
+
+    // RF
+    xlr_pin2 -> c4; c4 -> xlr_pin1;
+    xlr_pin3 -> c5; c5 -> xlr_pin1;
+}

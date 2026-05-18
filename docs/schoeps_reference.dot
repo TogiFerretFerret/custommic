@@ -1,0 +1,84 @@
+digraph Schoeps_Preamp {
+    rankdir=LR;
+    node [shape=record, style=filled, fillcolor=white];
+    compound=true;
+
+    // --- Input Block ---
+    subgraph cluster_input {
+        label = "Input Section (High Impedance)";
+        color = blue;
+        Capsule [label="{RK-47 Capsule|{<dia> Diaphragm|<back> Backplate}}"];
+        R1 [label="R1\n1GΩ"];
+        Q1 [label="{Q1 JFET (LSK170)|{<g> G|<d> D|<s> S}}"];
+    }
+
+    // --- Phase Splitter ---
+    subgraph cluster_splitter {
+        label = "Balanced Output Stage";
+        color = darkgreen;
+        Q2 [label="{Q2 NPN (BC547C)|{<b> B|<c> C|<e> E}}"];
+        Q3 [label="{Q3 NPN (BC547C)|{<b> B|<c> C|<e> E}}"];
+    }
+
+    // --- Output Connection ---
+    subgraph cluster_output {
+        label = "XLR Output";
+        color = red;
+        XLR [label="{XLR3 Male|{<p1> Pin 1 (GND)|<p2> Pin 2 (HOT)|<p3> Pin 3 (COLD)}}"];
+    }
+
+    // --- Power Section ---
+    subgraph cluster_power {
+        label = "Power & Filtering (Main Rail)";
+        color = orange;
+        MainRail [label="Main Rail Junction", shape=circle];
+        Zener [label="D1 Zener\n6.2V", shape=component];
+        FilterCap [label="C3\n0.1uF", shape=component];
+        R5 [label="R5\n6.81k"];
+        R6 [label="R6\n6.81k"];
+    }
+
+    // --- Connections ---
+    
+    // Input Signal
+    Capsule:dia -> Q1:g [label="Audio In"];
+    Q1:g -> R1 [dir=none];
+    R1 -> GND1 [label="To GND"];
+    GND1 [shape=none, label="GND"];
+
+    // JFET Bias/Drive
+    Q1:s -> source_junction [dir=none];
+    source_junction [shape=point];
+    source_junction -> Q2:b;
+    source_junction -> Q3:b;
+    source_junction -> R10 [label="Source Resistor"];
+    R10 [label="R10\n1k"];
+    R10 -> GND2 [shape=none, label="GND"];
+
+    // Main Rail Distribution
+    XLR:p2 -> R5 -> MainRail;
+    XLR:p3 -> R6 -> MainRail;
+    MainRail -> Zener -> GND3 [shape=none, label="GND"];
+    MainRail -> FilterCap -> GND4 [shape=none, label="GND"];
+    MainRail -> R9 -> Capsule:back [label="Bias"];
+    R9 [label="R9\n1M"];
+    MainRail -> R7 -> Q1:d [label="Drain Power"];
+    R7 [label="R7\n10k"];
+    MainRail -> Q2:c [label="Collector Power"];
+    
+    // The Phase Flip
+    Q3:c -> GND5 [label="PHASE FLIP", color=red];
+    GND5 [shape=none, label="GND"];
+
+    // Output Audio
+    Q2:e -> C1 -> XLR:p2 [label="HOT Signal"];
+    Q3:e -> C2 -> XLR:p3 [label="COLD Signal"];
+    C1 [label="C1\n0.1uF"];
+    C2 [label="C2\n0.1uF"];
+
+    // Output Protection
+    XLR:p2 -> C4 -> GND6 [shape=none, label="GND"];
+    XLR:p3 -> C5 -> GND7 [shape=none, label="GND"];
+    C4 [label="C4\n1000pF"];
+    C5 [label="C5\n1000pF"];
+}
